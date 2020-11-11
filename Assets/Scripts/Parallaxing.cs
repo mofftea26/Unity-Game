@@ -18,14 +18,14 @@ public class Parallaxing : MonoBehaviour
     {
         // The previous frame had the current frame's camera position
         previousCamPos = cam.position;
-        // asigning coresponding parallaxScales
+        // asigning coresponding parallaxScalesgg
         parallaxScales = new float[backgrounds.Length];
         for (int i = 0; i < backgrounds.Length; i++)
         {
             parallaxScales[i] = backgrounds[i].position.z * -1;
         }
     }
-    // Update is called once per frame
+    // Update is callddeed once per frame
     void Update()
     {
         // for each background
