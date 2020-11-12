@@ -13,6 +13,7 @@ public class Weapon : MonoBehaviour
     Transform firePoint;
 
     public Transform bulletTrailPrefab;
+    public Transform MuzzleFlashPrefab;
   void Awake()
     {
         firePoint = transform.Find("FirePoint");
@@ -70,6 +71,15 @@ public class Weapon : MonoBehaviour
         {
             //instantiating the bullet trail
             Instantiate(bulletTrailPrefab, firePoint.position, firePoint.rotation);
+            //first store the instance of a transform in a clone to modifie gameobject not the wole prefab
+            //then parent the clone to the firepoint to move accordingly
+            //then create a size variable and use it to scale the clone so it's size wld be random
+            //finally destroy the clone gameobject
+            Transform clone = (Transform)Instantiate(MuzzleFlashPrefab,firePoint.position, firePoint.rotation);
+            clone.parent = firePoint;
+            float size = Random.Range(0.6f, 0.9f);
+            clone.localScale = new Vector3(size, size, size);
+            Destroy(clone.gameObject,0.02f);
         }
     }
 }   

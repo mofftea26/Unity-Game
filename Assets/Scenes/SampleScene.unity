@@ -2423,6 +2423,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4764661509046067567, guid: d01a6769518e4ae478fc11462a264a72,
         type: 3}
+    - target: {fileID: 8799866391233505581, guid: da5d555575b57104889c12b4438c3600,
+        type: 3}
+      propertyPath: MuzzleFlashPrefab
+      value: 
+      objectReference: {fileID: 644296671635302257, guid: 9dfd645d1eb12784bbabc03c25863ffc,
+        type: 3}
     - target: {fileID: 8799866391233505583, guid: da5d555575b57104889c12b4438c3600,
         type: 3}
       propertyPath: m_LocalPosition.x
