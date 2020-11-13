@@ -10,12 +10,14 @@ namespace UnityStandardAssets._2D
         public float lookAheadFactor = 3;
         public float lookAheadReturnSpeed = 0.5f;
         public float lookAheadMoveThreshold = 0.1f;
+        public float yPosRestriction = -1f;
 
         private float m_OffsetZ;
         private Vector3 m_LastTargetPosition;
         private Vector3 m_CurrentVelocity;
         private Vector3 m_LookAheadPos;
-
+        //used for player search after respawn
+        float nexTimeToSearch = 0f;
         // Use this for initialization
         private void Start()
         {
@@ -28,6 +30,12 @@ namespace UnityStandardAssets._2D
         // Update is called once per frame
         private void Update()
         {
+            //we use this if condition so when the player gets destroyed the camera dont throw an error because of a missing target and search for another target
+            if(target==null)
+            {
+                FindPlayer();
+                return;
+            }
             // only update lookahead pos if accelerating or changed direction
             float xMoveDelta = (target.position - m_LastTargetPosition).x;
 
@@ -44,10 +52,27 @@ namespace UnityStandardAssets._2D
 
             Vector3 aheadTargetPos = target.position + m_LookAheadPos + Vector3.forward*m_OffsetZ;
             Vector3 newPos = Vector3.SmoothDamp(transform.position, aheadTargetPos, ref m_CurrentVelocity, damping);
+            //Clamping the camera so it does follow the character down the whole world
+            newPos = new Vector3(newPos.x, Mathf.Clamp(newPos.y,-1,Mathf.Infinity), newPos.z);
 
             transform.position = newPos;
 
             m_LastTargetPosition = target.position;
+        }
+        //Find player method we use next time to search variable not to tax the pc so much
+        //We search for the player by his tag and store it in a search result
+        //if the searchresult is not null meaning we found a player,we set it as a target then we add time to the next time tosearch
+        void FindPlayer()
+        {
+            if(nexTimeToSearch<=Time.time)
+            {
+                GameObject searchResult=GameObject.FindGameObjectWithTag("Player");
+                if(searchResult!=null)
+                {
+                    target = searchResult.transform;
+                }
+                nexTimeToSearch = Time.time + 0.5f;
+            }
         }
     }
 }
